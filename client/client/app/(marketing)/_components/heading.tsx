@@ -11,11 +11,10 @@ export const Heading = () => {
     return(
         <div className="max-w-3xl space-y-4">
             <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold">
-                Your Ideas, Documents, & Plans. Unified. Welcome to <span className="underline"> ideaJot</span>
+                Welcome to <span className="underline"> ideaJot</span>.
             </h1>
             <h3 className="text-basem sm:text-xl md:text-2xl font-medium">
-                ideaJot is the connected workspace where <br />
-                better, faster work happens.
+                Your partner for everyday organization 
             </h3>
             {/* hiding the button in the to display if they are authentication or not */}
             {isLoading && (
