@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import { ThemeProvider } from './(marketing)/_components/providers/theme-provider'
+import { ConvexClientProvider } from './(marketing)/_components/providers/convex.provider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -29,8 +31,21 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className}>
+        {/* wrapped the ThemeProvider with the ConvexClientProvider to add the convex provider to the website */}
+        <ConvexClientProvider>
+        {/* Followed Shadcn documenation to add darkmode to the website */}
+        <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+        storageKey="ideaJot-theme-2">
+        {children}
+        </ThemeProvider>
+        </ConvexClientProvider>
+        </body>
     </html>
   )
 }
