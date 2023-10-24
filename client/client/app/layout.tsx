@@ -44,7 +44,7 @@ export default function RootLayout({
         disableTransitionOnChange
         storageKey="ideaJot-theme-2">
         {children}
-        <Toaster position="bottom-center"/>
+        <Toaster position="top-center"/>
         </ThemeProvider>
         </ConvexClientProvider>
         </body>
