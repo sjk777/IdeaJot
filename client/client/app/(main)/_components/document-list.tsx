@@ -1,9 +1,13 @@
 "use client";
 
+import {useParams, useRouter } from "next/navigation";
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { Item } from "./item";
+import { cn } from "@/lib/utils";
+import { FileIcon } from "lucide-react";
 
 //interface with DocumentList that states the level and data (for nesting purposes) and data
 interface DocumentListProps{
@@ -13,7 +17,7 @@ interface DocumentListProps{
 }
 
 
-export const DocumentList = () => ({
+export const DocumentList = ({
     parentDocumentId,
     level= 0
 }: DocumentListProps) => {
@@ -39,14 +43,60 @@ export const DocumentList = () => ({
     const documents = useQuery(api.documents.getSidebar, {
         parentDocument: parentDocumentId
             });
-
-
+    
+    //convex will not display undefined unless it is loading, so we check for that here
+    if(documents === undefined){
+        return(
+            <>
+            <Item.Skeleton level={level} />
+            {level === 0 && (
+                <>
+                <Item.Skeleton level={level} />
+                <Item.Skeleton level={level} />
+                </>
+            )}
+            </>
+        );
+    };
 
 
     return(
-        <div>
-            Document List
-        </div>
+        <>
+        <p
+            style={{paddingLeft: level ? `${(level * 12) +25}px`: undefined
+        }}
+        className={cn(
+            "hidden text-sm font-medium text-muted-foreground/80",
+            //if its expanded give it a class of last:block if level is 0 gives it hidden
+        
+            expanded && "last:block",
+            level === 0 && "hidden"
+        )}
+        >
+            this is empty
+        </p>
+        {documents.map((document) =>(
+            <div key={document._id}>
+                <Item
+                    id={document._id}
+                    onClick ={() => onRedirect(document._id)}
+                    label = {document.title}
+                    icon= {FileIcon}
+                    documentIcon={document.icon}
+                    active={params.documentId === document._id}
+                    level ={level}
+                    onExpand={() => onExpand(document._id)}
+                    expanded={expanded[document._id]}
+                    />
+                       {expanded[document._id] && (
+                <DocumentList
+                    parentDocumentId={document._id}
+                    level={level + 1}
+                            />
+                    )}
+            </div>
+        ))};
+        </>
     )
 }
 
