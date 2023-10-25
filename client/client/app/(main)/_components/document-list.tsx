@@ -92,7 +92,7 @@ export const DocumentList = ({
                 <DocumentList
                     parentDocumentId={document._id}
                     level={level + 1}
-                            />
+                />
                     )}
             </div>
         ))};
